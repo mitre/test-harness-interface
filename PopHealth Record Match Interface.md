@@ -28,11 +28,12 @@ popHealth will use a FHIR message to initiate a matching operation.  The record-
 sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>Record Matcher: record-match(link to data set)
+Record Matcher->>popHealth: record-match acknowledgement
 Record Matcher->>popHealth: get data
 Record Matcher->>Record Matcher:find matches
 Record Matcher->>popHealth: record-match response
+popHealth->>Record Matcher: record-match response acknowledgement
 popHealth->>popHealth User: match complete
-
 ```
 ### Use Cases
 There are two use cases covered by this interface definition.
@@ -46,20 +47,45 @@ In the second use case, popHealth requests the record matcher return information
 
 ### record-match Request
 
-The record-match message is 
+The record-match message is a FHIR Message sent by popHealth to direct a record matching system to process one or two data sets.  The data sets are described by RESTful FHIR Search expressions.  The record matching system obtains the resources in the data set by invoking the FHIR Search service.
+
+#### Message Header
+The message header of the record match message will contain the a event type code, "record-match", in the popHealth-specific system space, 
+https://github.com/pophealth/fhir/message-events, will be used.
+
+The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to invoke a FHIR Search operation in order to retrieve data to process. One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the second data set (i.e., targetList) for potential matches of each of the records in the first data set (i.e., queryList)
+
+Target List Parameter
+Query List Parameter
 
 #### Message Parameters
-1. query list search URL
-2. target list search URL
+1. target list search URL
+2. query list search URL
 
 #### Example Messages
 
-- [Example 1 JSON](record-match-json-example-01.md)
-- [Example 1 XML](record-match-xml-example-01.md)
+- Example 1 [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
+
+
+### record-match acknowledgement
+A record matching system should send a message acknowledging receipt of a record-match message. This immediate response is recommended because the time to complete the requested matching operation may be significant.
+
+The acknowledgement message will contain an [OperationOurcom] resource that includes a code that indicates whether the record matching system accepts or rejects the request.
+
+The code value, "ok", with severity, "information", will be used when the record matcher accepts the request.
+
+When the record matcher rejects a record-match request, the acknowledgement message must have severity value, "error" and a code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html).
+
+
+#### Example Messages
+- Example 1 [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
+
 
 ### record-match Response
+The record-match response message provides a information about each potential match identified by the record matcher. 
+
 #### Example Messages
-- [Example 1 XML](record-match-response-xml-example-01.md)
+- Example 1 JSON | [XML](record-match-response-xml-example-01.md)
 
 ## Message Delivery Mechanism
 Section 2.4.4.1 of the FHIR Specification defines how a FHIR Server might offer a RESTful endpoint as central point for exchanging asynchronous messages. popHealth will use such an endpoint to exchange messages with a record matching system.
@@ -75,6 +101,8 @@ popHealth must distinguish between the destination of the message, which is the 
 A record matching system must provide a capability to receive the record-match FHIR message.  This may be either by providing a RESTful endpoint that can accept the message directly or by polling a FHIR Server for messages directed to the record matching system.
 
 The record matching system should allow the interval at which it polls a FHIR Server for messages to be configurable.
+
+
 
 ### Search Parameters
 The [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search) will be the initial set of supported search parameters used in the record-match message.
@@ -101,18 +129,10 @@ _____
 
 
 
-### Actor Summary
-popHealth
-FHIR Server
-record matcher - generic term
-
-
-
 ### Privacy, Security,  and Consent
 
 ## Specification and Conformance Requirements
-### Definitions, Interpretations and Requirements common to all actors
-FHIR Infrastructure usage: DAF uses FHIR RESTful API based on HTTP protocol along with FHIR data types, FHIR search and both xml and json FHIR Resource Formats. 
+
 
 ### Conformance Requirements for each Actor
 MessageHeader
