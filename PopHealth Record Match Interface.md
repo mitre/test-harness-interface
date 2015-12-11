@@ -40,7 +40,7 @@ There are two use cases covered by this interface definition.
 
 In the first use case, popHealth requests a record matching system process a single data set and return information about records it considers the same. Loosely speaking, the record matcher is being asked to identify potential duplicate records in a data set.
 
-In the second use case, popHealth requests the record matcher return information about matches of records from one data set (a.k.a,, query list) found in a second data set (a.k.a., target list). This is like giving a record matcher a list of names (i.e., query list) and asking it to look in some larger data set to find records that match those names.
+In the second use case, popHealth requests the record matcher return information about matches of records from one data set (a.k.a,, query list) found in a second data set (a.k.a., master record list). This is like giving a record matcher a list of names (i.e., query list) and asking it to look in some larger data set to find records that match those names.
 
 
 ## Message Definitions
@@ -119,11 +119,11 @@ The messasge header will contain one or two data elements that reference a Param
 ### record-match acknowledgement
 A record matching system should send a message acknowledging receipt of a record-match message. This immediate response is recommended because the time to complete the requested matching operation may be significant.
 
-The acknowledgement message will contain an [OperationOurcom] resource that includes a code that indicates whether the record matching system accepts or rejects the request.
+The acknowledgement message will contain a Message Header. In the case of where the record matching rejects the request an [OperationOutcome](http://hl7.org/fhir/DSTU2/operationoutcome.html) resource will also be included.
 
-The code value, "ok", with severity, "information", will be used when the record matcher accepts the request.
+The MessageHeader response code value, "ok" will indicate that the record matching system has accepted the request.
 
-When the record matcher rejects a record-match request, the acknowledgement message must have severity value, "error" and a code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html).
+When the record matcher rejects a record-match request, the MessageHeader response code must have a value of "fatal-error" and the bundle must contain an OperationOutcome. This OperationOutcome must have severity value, "error" and a code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html).
 
 
 #### Example Messages
@@ -131,7 +131,7 @@ When the record matcher rejects a record-match request, the acknowledgement mess
 
 
 ### record-match Response
-The record-match response message provides a information about each potential match identified by the record matcher. 
+The record-match response message provides a information about each potential match identified by the record matcher.
 
 #### Example Messages
 - Example 1 JSON | [XML](record-match-response-xml-example-01.md)
