@@ -55,44 +55,44 @@ The general structure of the record-match message is presented below.
 
 - Bundle
     - id
-	- type "message"
-	- entry
-     	- fullUrl -- *sender-generated uuid*
-     	- resource
-    	- MessageHeader
-    		- id
-    		- timestamp -- _time the message was sent_
-    		- event
-    			- system "https://github.com/popHealth"
-    			- code	"record-match"
+  - type "message"
+  - entry
+       - fullUrl -- *sender-generated uuid*
+       - resource
+      - MessageHeader
+        - id
+        - timestamp -- _time the message was sent_
+        - event
+          - system "https://github.com/popHealth"
+          - code  "record-match"
             - source
-				- endpoint
-				- name [Opt]
-			- destination
-				- endpoint
-			- author
-				- reference	-- reference to the person (popHealth User) that constructed the matching request
-			- data
-				- reference
-			- data
-				- reference
-	- entry
-		- fullUrl
-		- resource
-			- Parameters
-				- parameter
-					- name "type"
-					- valueString "query"
+        - endpoint
+        - name [Opt]
+      - destination
+        - endpoint
+      - author
+        - reference  -- reference to the person (popHealth User) that constructed the matching request
+      - data
+        - reference
+      - data
+        - reference
+  - entry
+    - fullUrl
+    - resource
+      - Parameters
+        - parameter
+          - name "type"
+          - valueString "query"
                    - parameter
-					- name "resourceType"
-					- valueString "Patient"
+          - name "resourceType"
+          - valueString "Patient"
                    - parameter
-                   	- name "searchExpression"
-                   	- resource
-                   	 	- Parameters
-                   			- parameter
-                   				- name
-	- entry
+                     - name "searchExpression"
+                     - resource
+                        - Parameters
+                         - parameter
+                           - name
+  - entry
 
 See the FHIR Specification for the data type definitions and optional elements for the  resources used in the record-match message.
 - [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
@@ -101,7 +101,7 @@ See the FHIR Specification for the data type definitions and optional elements f
 
 
 #### Message Header
-The message header of the record match message will contain the a event type code, "record-match", in the popHealth-specific system space, 
+The message header of the record match message will contain the a event type code, "record-match", in the popHealth-specific system space,
 https://github.com/pophealth/fhir/message-events, will be used.
 
 The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to invoke a FHIR Search operation in order to retrieve data to process. One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the second data set (i.e., targetList) for potential matches of each of the records in the first data set (i.e., queryList)
@@ -133,6 +133,51 @@ When the record matcher rejects a record-match request, the MessageHeader respon
 ### record-match Response
 The record-match response message provides a information about each potential match identified by the record matcher.
 
+The record-match response will be a FHIR Bundle that contains a MessageHeader resource. The MessageHeader response code value, "ok" will indicate that the record matching system has successfully completed its matching run. In the case where the record matching system encounters and error, an [OperationOutcome](http://hl7.org/fhir/DSTU2/operationoutcome.html) resource will also be included.
+
+The message header will have one or two data references. These will refer to Bundle entries which describe the query list and the master record list.
+
+Lastly, the Bundle will include zero or more entries to represent links between records that the matching system has discovered. The entry shall use the [Patient Matching using an MPI](http://hl7.org/fhir/DSTU2/patient.html#match) extension. This extension will be used to represent the quality of the link between records.
+
+- Bundle
+    - id
+  - type "message"
+  - entry
+    - fullUrl -- *sender-generated uuid*
+    - resource
+      - MessageHeader
+        - id -- *sender-generated uuid*
+        - timestamp -- _time the message was sent_
+        - event
+          - system "https://github.com/popHealth"
+          - code  "record-match"
+        - source
+          - endpoint -- The URI identifying the patient matching system
+          - name [Opt]
+        - destination
+          - endpoint -- The URI identifying the popHealth test harness
+        - data
+          - reference -- a reference to the query list
+        - data
+          - reference -- a reference to the master record list
+  - entry
+    - fullUrl
+    - request
+      -method -- value=GET
+      -url -- The FHIR Search string to represent either the query list or master record list
+  - entry
+    - fullUrl -- A link to one of the records on the FHIR server
+    - link
+      - relation -- value=type
+      - url -- The resource type for the records being matched. The initial cases will be matches between FHIR Patient resources (value=http://hl7.org/fhir/Patient)
+    - link
+      - relation -- value=related
+      - url -- A link to a record that is related to the resource specified in the fullUrl
+    - search
+      - extension -- Patient Matching using an MPI FHIR extension
+        - valueCode -- Values that conform to the [MPIMatch](http://hl7.org/fhir/DSTU2/valueset-patient-mpi-match.html) value set. The value will indicate the match quality.
+      - score -- All entries SHALL have a score from 0 to 1, where 1 is the most certain 
+
 #### Example Messages
 - Example 1 JSON | [XML](record-match-response-xml-example-01.md)
 
@@ -145,7 +190,7 @@ popHealth must be configurable to poll a FHIR Server for messages directed to po
 
 popHealth may provide a capability to receive the record-match response FHIR message by providing a RESTful endpoint that can accept the message directly.
 
-popHealth must distinguish between the destination of the message, which is the record matching system, and the server to which it sends the message for brokering. This may be the same endpoint if the record matching system acts as the central point of mesasge exchange.
+popHealth must distinguish between the destination of the message, which is the record matching system, and the server to which it sends the message for brokering. This may be the same endpoint if the record matching system acts as the central point of message exchange.
 
 A record matching system must provide a capability to receive the record-match FHIR message.  This may be either by providing a RESTful endpoint that can accept the message directly or by polling a FHIR Server for messages directed to the record matching system.
 
