@@ -18,7 +18,7 @@ This document describes the interaction that between popHealth and a record matc
 This document does not specify how popHealth is made aware of any record matching system or how to configure a record matching system to work with popHealth. It also does not specify the mechanism by which a record matching system authenticates with popHealth to obtain data.
 
 ### Assumptions
-1. This document assumes FHIR Specification [DSTU2](http://hl7.org/fhir/timelines.html), which is the current officially realeased version at the time of writing.
+1. This document assumes FHIR Specification [DSTU2](http://hl7.org/fhir/timelines.html), which is the current officially released version at the time of writing.
 
 ### Technical Approach
 popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. When the record matching system completes its processing, it sends a FHIR message containing the match results back to popHealth.  These high level steps can be depicted as:
@@ -54,45 +54,48 @@ The record-match message is a FHIR Message sent by popHealth to direct a record 
 The general structure of the record-match message is presented below.
 
 - Bundle
-    - id
-  - type "message"
-  - entry
-       - fullUrl -- *sender-generated uuid*
-       - resource
-      - MessageHeader
-        - id
-        - timestamp -- _time the message was sent_
-        - event
-          - system "https://github.com/popHealth"
-          - code  "record-match"
-            - source
-        - endpoint
-        - name [Opt]
-      - destination
-        - endpoint
-      - author
-        - reference  -- reference to the person (popHealth User) that constructed the matching request
-      - data
-        - reference
-      - data
-        - reference
-  - entry
-    - fullUrl
-    - resource
-      - Parameters
-        - parameter
-          - name "type"
-          - valueString "query"
+    - id -- _identifier of the bundle_
+	- type "message"
+	- entry
+     	- fullUrl -- *sender-generated uuid*
+     	- resource
+	    	- MessageHeader
+    			- id -- _identifier of the message_
+    			- timestamp -- _time the message was sent_
+    			- event
+    				- system "https://github.com/popHealth" -- _namespace for record-match message event code_
+    				- code	"record-match" -- code value to denote a record-match message
+				- source
+					- endpoint -- _the address to which responses to this message should be sent_
+				- destination
+					- endpoint --address of the destination application (i.e., the record matching system).  
+				- author
+					- reference	-- _reference to the popHealth user (Practitioner) that constructed the matching request.  The Practitioner resource is provided in another entry in this bundlel_
+				- data
+					- reference
+				- data
+					- reference
+	- entry
+		- fullUrl
+		- resource
+			- Parameters
+				- parameter
+					- name "type"
+					- valueString "query"
                    - parameter
-          - name "resourceType"
-          - valueString "Patient"
+					- name "resourceType"
+					- valueString "Patient"
                    - parameter
-                     - name "searchExpression"
-                     - resource
-                        - Parameters
-                         - parameter
-                           - name
-  - entry
+                   	- name "searchExpression"
+                   	- resource
+                   	 	- Parameters
+                   			- parameter
+                   				- name
+	- entry
+		- fullUrl
+		- resource
+			- Practitioner
+				- 
 
 See the FHIR Specification for the data type definitions and optional elements for the  resources used in the record-match message.
 - [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
@@ -101,14 +104,12 @@ See the FHIR Specification for the data type definitions and optional elements f
 
 
 #### Message Header
-The message header of the record match message will contain the a event type code, "record-match", in the popHealth-specific system space,
-https://github.com/pophealth/fhir/message-events, will be used.
 
 The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to invoke a FHIR Search operation in order to retrieve data to process. One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the second data set (i.e., targetList) for potential matches of each of the records in the first data set (i.e., queryList)
 
 
 #### Message Parameters
-1. target list search URL
+1. master record list search URL
 2. query list search URL
 
 #### Example Messages
@@ -125,6 +126,41 @@ The MessageHeader response code value, "ok" will indicate that the record matchi
 
 When the record matcher rejects a record-match request, the MessageHeader response code must have a value of "fatal-error" and the bundle must contain an OperationOutcome. This OperationOutcome must have severity value, "error" and a code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html).
 
+#### Message Structure
+
+- Bundle
+    - id -- _identifier of the bundle_
+	- type "message"
+	- entry
+     	- fullUrl -- *sender-generated uuid*
+     	- resource
+    		- MessageHeader
+    			- id -- _identifier of the message_
+    			- timestamp -- _time the message was sent_
+    			- event
+	    			- system "https://github.com/popHealth" -- _namespace for record-match message event code_
+    				- code	"record-match" -- code value to denote a record-match message
+				- response
+					- identifier -- _identifier of the message for which this is a response_
+					- code "ok | fatal-error" -- *See [Response Type](http://www.hl7.org/implement/standards/fhir/valueset-response-code.html) in the FHIR Specification*
+					- details -- _included only if the response code is fatal-error_
+						- reference -- _reference to an OperationOutcome resource that contains information about the error_
+				- source
+					- endpoint -- *the address to which responses to this message should be sent*
+				- destination
+					- endpoint -- *address of the destination application (i.e., popHealth). This will normally be the source.endpoint in the request message*
+	- entry
+		- resource
+			- OperationOutcome
+				- issue
+					- severity
+					- code
+
+
+See the FHIR Specification for the data type definitions and optional elements for the  resources used in this message.
+- [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
+- [MessageHeader](http://www.hl7.org/implement/standards/fhir/messageheader.html)
+- [OperationOutcome](http://www.hl7.org/implement/standards/fhir/operationoutcome.html)
 
 #### Example Messages
 - Example 1 [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
