@@ -1,6 +1,6 @@
 #record-match Response Message Example: XML
 
-This example contains the minimum set of elements and attributes for a response to a record-match requeset.
+This example contains the minimum set of elements and attributes for a response to a record-match request.
 ```xml
  <Bundle xmlns="http://hl7.org/fhir">
   <id value="3a0707d3-549e-4467-b8b8-5a2ab3800efe"/>
@@ -37,7 +37,7 @@ This example contains the minimum set of elements and attributes for a response 
       </MessageHeader>
     </resource>
   </entry>
-  
+
   <entry>
     <fullUrl value="urn:uuid:03f9aa7d-b395-47b9-84e0-053678b6e4e3"/>
     <resource>
@@ -53,7 +53,7 @@ This example contains the minimum set of elements and attributes for a response 
       </OperationOutcome>
     </resource>  
   </entry>
- 
+
    <!-- The search expressions from the match request are repeated in response -->
    <entry>
     <fullUrl value="urn:uuid:04121321-4af5-424c-a0e1-ed3aab1c349d"/>
@@ -72,11 +72,11 @@ This example contains the minimum set of elements and attributes for a response 
       <url value="http://acme.com/popHealth/fhir/Patient?name=Jon"/>
     </request>
   </entry>
-  
+
   <!-- Entries that report match results -->
   <entry>
     <!-- Record on source fhir server -->
-    <fullUrl> http://acme.com/popHealth/Patient/5</fullUrl>
+    <fullUrl>http://acme.com/popHealth/Patient/5</fullUrl>
     <!-- reference to URI that defines resource type -->
     <link>
       <relation value=“type”/>
