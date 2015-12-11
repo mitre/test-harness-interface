@@ -49,14 +49,63 @@ In the second use case, popHealth requests the record matcher return information
 
 The record-match message is a FHIR Message sent by popHealth to direct a record matching system to process one or two data sets.  The data sets are described by RESTful FHIR Search expressions.  The record matching system obtains the resources in the data set by invoking the FHIR Search service.
 
+#### Message Structure
+
+The general structure of the record-match message is presented below.
+
+- Bundle
+    - id
+	- type "message"
+	- entry
+     	- fullUrl -- *sender-generated uuid*
+     	- resource
+    	- MessageHeader
+    		- id
+    		- timestamp -- _time the message was sent_
+    		- event
+    			- system "https://github.com/popHealth"
+    			- code	"record-match"
+            - source
+				- endpoint
+				- name [Opt]
+			- destination
+				- endpoint
+			- author
+				- reference	-- reference to the person (popHealth User) that constructed the matching request
+			- data
+				- reference
+			- data
+				- reference
+	- entry
+		- fullUrl
+		- resource
+			- Parameters
+				- parameter
+					- name "type"
+					- valueString "query"
+                   - parameter
+					- name "resourceType"
+					- valueString "Patient"
+                   - parameter
+                   	- name "searchExpression"
+                   	- resource
+                   	 	- Parameters
+                   			- parameter
+                   				- name
+	- entry
+
+See the FHIR Specification for the data type definitions and optional elements for the  resources used in the record-match message.
+- [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
+- [MessageHeader](http://www.hl7.org/implement/standards/fhir/messageheader.html)
+- [Parameters](http://www.hl7.org/implement/standards/fhir/parameters.html)
+
+
 #### Message Header
 The message header of the record match message will contain the a event type code, "record-match", in the popHealth-specific system space, 
 https://github.com/pophealth/fhir/message-events, will be used.
 
 The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to invoke a FHIR Search operation in order to retrieve data to process. One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the second data set (i.e., targetList) for potential matches of each of the records in the first data set (i.e., queryList)
 
-Target List Parameter
-Query List Parameter
 
 #### Message Parameters
 1. target list search URL
