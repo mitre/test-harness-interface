@@ -1,4 +1,6 @@
-# record-match Acknowledgement Response Message Accept Example: XML
+# record-match Acknowledgement Response Message Example: XML
+
+The following message returns an error code denoting that a required element in the request message was missing.
 
 ```xml
  <Bundle xmlns="http://hl7.org/fhir">
@@ -16,7 +18,7 @@
         </event>
         <response>
           <identifier value="efdd254b-0e09-4164-883e-35cf3871715f"/>
-          <code value="ok"/>
+          <code value="fatal-error"/>
         </response>
         <source>
           <endpoint value="http://acme.com/record-matcher"/>
@@ -24,9 +26,24 @@
         <destination>
           <endpoint value="https://acme.com/pophealth"/>
         </destination>
+        <data>
+          <reference value="urn:uuid:26121321-4af5-424c-a0e1-ed3aab1c3470"/>
+        </data>
       </MessageHeader>
     </resource>
   </entry>
   
+  <entry>
+    <fullUrl value="urn:uuid:25121321-4af5-424c-a0e1-ed3aab1c3560"/>
+    <resource>
+      <OperationOutcome>
+        <id value="urn:uuid:26121321-4af5-424c-a0e1-ed3aab1c3470"/>
+        <issue>
+          <severity value="fatal-error"/>
+          <code value="required" />
+        </issue>
+      </OperationOutcome>
+    </resource>
+  </entry>  
 </Bundle>
 ```

@@ -21,7 +21,7 @@ This document does not specify how popHealth is made aware of any record matchin
 1. This document assumes FHIR Specification [DSTU2](http://hl7.org/fhir/timelines.html), which is the current officially released version at the time of writing.
 
 ### Technical Approach
-popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. When the record matching system completes its processing, it sends a FHIR message containing the match results back to popHealth.  These high level steps can be depicted as:
+popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. Pophealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
 
 
 ```mermaid
@@ -38,16 +38,17 @@ popHealth->>popHealth User: match complete
 ### Use Cases
 There are two use cases covered by this interface definition.
 
-In the first use case, popHealth requests a record matching system process a single data set and return information about records it considers the same. Loosely speaking, the record matcher is being asked to identify potential duplicate records in a data set.
+In the first use case, popHealth requests a record matching system process a single data set and return information about records it considers the same. Loosely speaking, the record matcher is being asked to identify potential duplicate records in a master record list.
 
 In the second use case, popHealth requests the record matcher return information about matches of records from one data set (a.k.a,, query list) found in a second data set (a.k.a., master record list). This is like giving a record matcher a list of names (i.e., query list) and asking it to look in some larger data set to find records that match those names.
-
 
 ## Message Definitions
 
 ### record-match Request
 
 The record-match message is a FHIR Message sent by popHealth to direct a record matching system to process one or two data sets.  The data sets are described by RESTful FHIR Search expressions.  The record matching system obtains the resources in the data set by invoking the FHIR Search service.
+
+The search expression includes the component parts that allow the record matching system to invoke a RESTful a FHIR Search. The record matching system may use either the HTTP GET or POST method to invoke the Search service. The response from popHealth shall be conformant with the [FHIR Search RESTful API](http://hl7.org/fhir/http.html#search)
 
 #### Message Structure
 
@@ -72,53 +73,74 @@ The general structure of the record-match message is presented below.
 				- author
 					- reference	-- _reference to the popHealth user (Practitioner) that constructed the matching request.  The Practitioner resource is provided in another entry in this bundlel_
 				- data
-					- reference
-				- data
-					- reference
+					- reference	-- _reference to a Parameters resource with information for a search expression to retrieve the master record list_
+				- data -- _Included only when record matching system is to directed to find potential matches to items in a query list_
+					- reference -- _reference to a Parameters resource with information for a search expression that will result in the records that comprise the query list_
 	- entry
-		- fullUrl
+     	- fullUrl -- *sender-generated uuid that identifies this entry*
+		- resource
+			- Parameters
+				- parameter
+					- name "type"
+					- valueString "master"
+				- parameter
+					- name "resourceType" -- _denotes the type of resource that will be returned by the search expression_
+					- valueString "Patient" -- _code value from the [resource-types] (https://www.hl7.org/implement/standards/fhir/valueset-resource-types.html) value set_
+				- parameter
+					- name "searchExpression"
+                   	- resource
+                   	 	- Parameters
+                   			- parameter
+                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_ 
+                   				- valueUri
+                   			- parameter -- _zero or more parameter elements that comprise the query expression_
+                   				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search)_
+                   				- value[x] -- _value and, when applicable, prefix and modifier_
+	- entry -- _Included only if record matching system is directed to search the master record list for matches of items in a query list_
+     	- fullUrl -- *sender-generated uuid that identifies this entry*
 		- resource
 			- Parameters
 				- parameter
 					- name "type"
 					- valueString "query"
-                   - parameter
-					- name "resourceType"
-					- valueString "Patient"
-                   - parameter
-                   	- name "searchExpression"
+				- parameter
+					- name "resourceType" -- _denotes the type of resource that will be returned by the search expression_
+					- valueString "Patient" -- _code value from the [resource-types] (https://www.hl7.org/implement/standards/fhir/valueset-resource-types.html) value set_
+				- parameter
+					- name "searchExpression"
                    	- resource
                    	 	- Parameters
                    			- parameter
-                   				- name "resourceUrl
+                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_ 
                    				- valueUri
-                   			- parameter
-                   				- name "resourceUrl
-                   				- valueUri
+                   			- parameter -- _zero or more parameter elements that comprise the query expression_
+                   				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search)_
+                   				- value[x] -- _value and, when applicable, prefix and modifier_
 	- entry
-		- fullUrl
+     	- fullUrl -- *sender-generated uuid that identifies this entry*
 		- resource
 			- Practitioner
-				- 
+				- identifier
+					- use "usual"
+					- system "https://github.com/pophealth/users" -- _uri of code space that represents popHealth user identifiers (e.g., user names)_
+					- value -- _popHealth user name or other identifier_
 
 See the FHIR Specification for the data type definitions and optional elements for the  resources used in the record-match message.
 - [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
 - [MessageHeader](http://www.hl7.org/implement/standards/fhir/messageheader.html)
 - [Parameters](http://www.hl7.org/implement/standards/fhir/parameters.html)
+- [Practitioner](http://www.hl7.org/implement/standards/fhir/practitioner.html)
 
 
-#### Message Header
+The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to construct and then invoke a FHIR Search operation in order to retrieve data to process. 
 
-The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to invoke a FHIR Search operation in order to retrieve data to process. One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the second data set (i.e., targetList) for potential matches of each of the records in the first data set (i.e., queryList)
+One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the first data set (i.e., master record list) for potential matches of each of the records in the second data set (i.e., query list).
 
-
-#### Message Parameters
-1. master record list search URL
-2. query list search URL
 
 #### Example Messages
 
-- Example 1 [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
+- Single Request Parameter: [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
+- Two Request Parameters: [JSON](record-match-json-example-02.md) | [XML](record-match-json-example-02.md)
 
 
 ### record-match acknowledgement
@@ -143,7 +165,7 @@ The OperationOutcome must have issue severity value, "error" and an issue code v
     			- timestamp -- _time the message was sent_
     			- event
 	    			- system "https://github.com/popHealth" -- _namespace for record-match message event code_
-    				- code	"record-match" -- code value to denote a record-match message
+    				- code	"record-match" -- _code value to denote a record-match message_
 				- response
 					- identifier -- _identifier of the message for which this is a response_
 					- code "ok | fatal-error" -- *See [Response Type](http://www.hl7.org/implement/standards/fhir/valueset-response-code.html) in the FHIR Specification*
@@ -248,9 +270,8 @@ The [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/pati
 
 
 
-
 ### Security Implementation Guidance
-RESTful service invocations should be via the HTTPS protocol.
+All RESTful service invocations should be via the HTTPS protocol.
 
 The process of authenticating with any of the involved FHIR Servers is outside the scope of this interface.
 
@@ -258,31 +279,3 @@ The process of authenticating with any of the involved FHIR Servers is outside t
 - [FHIR DSTU2 Specification](http://hl7.org/fhir/index.html)
 - [FHIR Messaging](http://www.hl7.org/implement/standards/fhir/messaging.html)
 
-
-_____
-_____
-_____
-
-##__WHERE DO THE FOLLOWING GO__
-
-
-
-
-### Privacy, Security,  and Consent
-
-## Specification and Conformance Requirements
-
-
-### Conformance Requirements for each Actor
-MessageHeader
-id
-identifier
-timestamp
-event
-source
-destination
-tag
-
-Leave for later draft
-status-request (operation definition)
-status response
