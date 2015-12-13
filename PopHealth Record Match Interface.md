@@ -90,7 +90,11 @@ The general structure of the record-match message is presented below.
                    	- resource
                    	 	- Parameters
                    			- parameter
-                   				- name
+                   				- name "resourceUrl
+                   				- valueUri
+                   			- parameter
+                   				- name "resourceUrl
+                   				- valueUri
 	- entry
 		- fullUrl
 		- resource
@@ -118,13 +122,13 @@ The messasge header will contain one or two data elements that reference a Param
 
 
 ### record-match acknowledgement
-A record matching system should send a message acknowledging receipt of a record-match message. This immediate response is recommended because the time to complete the requested matching operation may be significant.
+A record matching system should send a message acknowledging receipt of a record-match message. An acknowledgement is recommended because the time to complete the requested matching operation may be significant.
 
-The acknowledgement message will contain a Message Header. In the case of where the record matching rejects the request an [OperationOutcome](http://hl7.org/fhir/DSTU2/operationoutcome.html) resource will also be included.
+When the record matching system will accept and process the record-match request, the acknowledgement message will contain a Message Header with response code value, "ok".
 
-The MessageHeader response code value, "ok" will indicate that the record matching system has accepted the request.
+When the record matcher rejects a record-match request, the MessageHeader must have the response code value, "fatal-error" and reference an [OperationOutcome](http://hl7.org/fhir/DSTU2/operationoutcome.html) resource contained in another entry in the bundle.
 
-When the record matcher rejects a record-match request, the MessageHeader response code must have a value of "fatal-error" and the bundle must contain an OperationOutcome. This OperationOutcome must have severity value, "error" and a code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html).
+The OperationOutcome must have issue severity value, "error" and an issue code value from the value set, [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html). The issue code provides popHealth with information about why the record matching system will not process the request. Human-friendly text that complements the issue code may also be provided in an issue details element.
 
 #### Message Structure
 
@@ -132,7 +136,7 @@ When the record matcher rejects a record-match request, the MessageHeader respon
     - id -- _identifier of the bundle_
 	- type "message"
 	- entry
-     	- fullUrl -- *sender-generated uuid*
+     	- fullUrl -- *sender-generated uuid that identifies this entry*
      	- resource
     		- MessageHeader
     			- id -- _identifier of the message_
@@ -146,15 +150,20 @@ When the record matcher rejects a record-match request, the MessageHeader respon
 					- details -- _included only if the response code is fatal-error_
 						- reference -- _reference to an OperationOutcome resource that contains information about the error_
 				- source
-					- endpoint -- *the address to which responses to this message should be sent*
+					- endpoint -- _the address of the sender of this response message_
 				- destination
-					- endpoint -- *address of the destination application (i.e., popHealth). This will normally be the source.endpoint in the request message*
-	- entry
+					- endpoint -- _address of the application to which the response is directed (i.e., popHealth)_
+	- entry -- _Included only if the record matching system is rejecting the record-match request_
+     	- fullUrl -- *sender-generated uuid that identifies this entry*
 		- resource
 			- OperationOutcome
+				- id -- _identifier of this OperationOutcome resource; referenced above in MessageHeader_
 				- issue
-					- severity
-					- code
+					- severity -- "fatal-error" _The literal value, "fatal-error" denotes the record matching system cannot recover from the reported error and will not process the request._
+					- code -- _value from the value set,  [issue-type](http://www.hl7.org/implement/standards/fhir/valueset-issue-type.html)_
+
+					- details -- _Optional_
+						- text -- _Human-friendly description of the error or reason the record matching system is rejecting the request_
 
 
 See the FHIR Specification for the data type definitions and optional elements for the  resources used in this message.
