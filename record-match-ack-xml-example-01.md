@@ -1,5 +1,7 @@
 ﻿#record-match Acknowledgement Response Message Accept Example: XML
 
+In the following example the record matching system acknowledges the record-match request with the "ok" response code, which indicates the record matching system will process the request. Note that this message bundle contains only one entry.
+
 ```xml
  <Bundle xmlns="http://hl7.org/fhir">
   <id value="3a0707d3-549e-4467-b8b8-5a2ab3800efe"/>
@@ -27,6 +29,5 @@
       </MessageHeader>
     </resource>
   </entry>
-  
 </Bundle>
 ```
