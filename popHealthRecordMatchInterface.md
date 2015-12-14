@@ -1,14 +1,17 @@
 ---
 layout: default
 ---
+
 # popHealth Record Matching System Interface
 
 version 0.1
+
 xx December 2015
+
 The MITRE Corporation
 
-[TOC]
-
+* Table of Contents
+{:toc}
 
 ## Introduction
 
