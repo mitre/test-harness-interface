@@ -1,4 +1,6 @@
-
+---
+layout: default
+---
 # popHealth Record Matching System Interface
 
 version 0.1
@@ -9,6 +11,7 @@ The MITRE Corporation
 
 
 ## Introduction
+
 ### Purpose
 This document describes the interface that popHealth provides to a Record Matching System.  The interface leverages both [FHIR Messaging](http://www.hl7.org/implement/standards/fhir/messaging.html) and [RESTful FHIR Search](http://hl7.org/fhir/search.html).
 
@@ -23,8 +26,7 @@ This document does not specify how popHealth is made aware of any record matchin
 ### Technical Approach
 popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. popHealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
 
-
-```mermaid
+{% mermaid %}
 sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>Record Matcher: record-match(link to data set)
@@ -34,7 +36,8 @@ Record Matcher->>Record Matcher:find matches
 Record Matcher->>popHealth: record-match response
 popHealth->>Record Matcher: record-match response acknowledgement
 popHealth->>popHealth User: match complete
-```
+{% endmermaid %}
+
 ### Use Cases
 There are two use cases covered by this interface definition.
 

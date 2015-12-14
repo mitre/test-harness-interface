@@ -23,10 +23,10 @@ This example contains the minimum set of elements and attributes for a response 
           </details>
         </response>
         <source>
-          <endpoint value="https://acme.com/pophealth"/>
+          <endpoint value="http://acme.com/record-matcher"/>
         </source>
         <destination>
-          <endpoint value="http://acme.com/record-matcher"/>
+          <endpoint value="https://acme.com/pophealth"/>
         </destination>
         <data>
           <reference value="urn:uuid:04121321-4af5-424c-a0e1-ed3aab1c349d"/>
