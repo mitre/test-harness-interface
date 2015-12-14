@@ -30,7 +30,7 @@ The following search is for patients who have a value in the gender field.
                   "name" : "gender:missing",
                   "valueString" : "false"
                 }
-              }
+              ]
             }
           }
         ]
@@ -70,7 +70,7 @@ The following search is for patients whose name is contains "John" (case insensi
                   "name" : "address-state",
                   "valueString" : "MA,CT,RI,NH,VT,ME"
                 }
-              }
+              ]
             }
           }
         ]
@@ -110,7 +110,7 @@ The following search is for patients whose name matches the string, maria, and h
                   "name" : "birthdate",
                   "valueString" : "ge2000-01-01"
                 }
-              }
+              ]
             }
           }
         ]
