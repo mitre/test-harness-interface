@@ -1,14 +1,20 @@
+---
+layout: default
+---
 
 # popHealth Record Matching System Interface
 
 version 0.1
+
 xx December 2015
+
 The MITRE Corporation
 
-[TOC]
-
+* Table of Contents
+{:toc}
 
 ## Introduction
+
 ### Purpose
 This document describes the interface that popHealth provides to a Record Matching System.  The interface leverages both [FHIR Messaging](http://www.hl7.org/implement/standards/fhir/messaging.html) and [RESTful FHIR Search](http://hl7.org/fhir/search.html).
 
@@ -23,8 +29,7 @@ This document does not specify how popHealth is made aware of any record matchin
 ### Technical Approach
 popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. popHealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
 
-
-```mermaid
+{% mermaid %}
 sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>Record Matcher: record-match(link to data set)
@@ -33,7 +38,8 @@ Record Matcher->>popHealth: get data (RESTful Search)
 Record Matcher->>Record Matcher:find matches
 Record Matcher->>popHealth: record-match response
 popHealth->>popHealth User: match complete
-```
+{% endmermaid %}
+
 ### Use Cases
 There are two use cases covered by this interface definition.
 
@@ -138,9 +144,9 @@ One data element is provided when the record matching system is expected to iden
 
 #### Example Messages
 
-- Single Request Parameter: [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
-- Two Request Parameters: [JSON](record-match-json-example-02.md) | [XML](record-match-json-example-02.md)
-- Search Parameters: [JSON](record-match-json-searchParams-example.md)
+- Single Request Parameter: [JSON](record-match-json-example-01) | [XML](record-match-xml-example-01)
+- Two Request Parameters: [JSON](record-match-json-example-02) | [XML](record-match-json-example-02)
+- Search Parameters: [JSON](record-match-json-searchParams-example)
 
 ### record-match acknowledgement
 A record matching system should send a message acknowledging receipt of a record-match message. An acknowledgement is recommended because the time to complete the requested matching operation may be significant.
@@ -193,8 +199,8 @@ See the FHIR Specification for the data type definitions and optional elements f
 - [OperationOutcome](http://www.hl7.org/implement/standards/fhir/operationoutcome.html)
 
 #### Example Messages
-- Accepted Request: [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
-- Rejected Request 1: [JSON](record-match-ack-json-example-02.md) | [XML](record-match-ack-xml-example-02.md)
+- Accepted Request: [JSON](record-match-ack-json-example-01) | [XML](record-match-ack-xml-example-01)
+- Rejected Request 1: [JSON](record-match-ack-json-example-02) | [XML](record-match-ack-xml-example-02)
 
 
 ### record-match Response
@@ -246,7 +252,7 @@ Lastly, the Bundle will include zero or more entries to represent links between 
       - score -- _All entries SHALL have a score from 0 to 1, where 1 is the most certain_
 
 #### Example Messages
-- Example 1 [JSON](record-match-response-json-example-01.md) | [XML](record-match-response-xml-example-01.md)
+- Example 1 [JSON](record-match-response-json-example-01) | [XML](record-match-response-xml-example-01)
 
 ## Message Delivery Mechanism
 Section 2.4.4.1 of the FHIR Specification defines how a FHIR Server might offer a RESTful endpoint as central point for exchanging asynchronous messages. popHealth will use such an endpoint to exchange messages with a record matching system.

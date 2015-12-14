@@ -1,9 +1,12 @@
+---
+layout: default
+---
 # record-match Search Parameters Example: JSON
 
 
 The following search is for patients who have a value in the gender field.
 
-```json
+~~~json
     {
       "fullUrl": "urn:uuid:15121321-4af5-424c-a0e1-ed3aab1c348e",
       "resource": {
@@ -36,10 +39,11 @@ The following search is for patients who have a value in the gender field.
         ]
       }
     }
-```
+~~~
 
 The following search is for patients whose name is contains "John" (case insensitive and accent-insensitive, partial match at start or end) and whose address.state value is one of the specified values.
-```json
+
+~~~json
     {
       "fullUrl": "urn:uuid:15121321-4af5-424c-a0e1-ed3aab1c348e",
       "resource": {
@@ -76,10 +80,11 @@ The following search is for patients whose name is contains "John" (case insensi
         ]
       }
     }
-```
+~~~
 
 The following search is for patients whose name matches the string, maria, and has a birthdate on Jan 1, 2000 or later
-```json
+
+~~~json
     {
       "fullUrl": "urn:uuid:15121321-4af5-424c-a0e1-ed3aab1c348e",
       "resource": {
@@ -116,4 +121,4 @@ The following search is for patients whose name matches the string, maria, and h
         ]
       }
     }
-```
+~~~

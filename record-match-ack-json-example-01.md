@@ -1,7 +1,11 @@
+---
+layout: default
+---
 # record-match Message Example: JSON
 
 This example contains the minimum set of elements.
-```json
+
+~~~json
 {
   "resourceType": "Bundle",
   "id": "3a0707d3-549e-4467-b8b8-5a2ab3800efe",
@@ -29,4 +33,4 @@ This example contains the minimum set of elements.
     }
   ]
 }
-```
+~~~

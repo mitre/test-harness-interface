@@ -1,7 +1,11 @@
-#record-match Response Message Example: XML
+---
+layout: default
+---
+# record-match Response Message Example: XML
 
 This example contains the minimum set of elements and attributes for a response to a record-match request.
-```xml
+
+~~~xml
  <Bundle xmlns="http://hl7.org/fhir">
   <id value="3a0707d3-549e-4467-b8b8-5a2ab3800efe"/>
   <type value="message"/>
@@ -23,10 +27,10 @@ This example contains the minimum set of elements and attributes for a response 
           </details>
         </response>
         <source>
-          <endpoint value="https://acme.com/pophealth"/>
+          <endpoint value="http://acme.com/record-matcher"/>
         </source>
         <destination>
-          <endpoint value="http://acme.com/record-matcher"/>
+          <endpoint value="https://acme.com/pophealth"/>
         </destination>
         <data>
           <reference value="urn:uuid:04121321-4af5-424c-a0e1-ed3aab1c349d"/>
@@ -98,4 +102,4 @@ This example contains the minimum set of elements and attributes for a response 
   </entry>
 ...
 </Bundle>
-```
+~~~
