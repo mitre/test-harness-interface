@@ -32,7 +32,7 @@ popHealth will use a FHIR message to initiate a matching operation.  The record-
 {% mermaid %}
 sequenceDiagram
 popHealth User->>popHealth: start match
-popHealth->>Record Matcher: record-match(link to data set)
+popHealth->>Record Matcher: record-match(search expr to master record list)
 Record Matcher->>popHealth: record-match acknowledgement
 Record Matcher->>popHealth: get data (RESTful Search)
 Record Matcher->>Record Matcher:find matches
@@ -271,20 +271,24 @@ The record matching system should allow the interval at which it polls a FHIR Se
 
 A depiction of the record-match call sequence  with the FHIR Server included is:
 
-```mermaid
+{% mermaid %}
 sequenceDiagram
 popHealth User->>popHealth: start match
-popHealth->>FHIR Server: record-match(link to data set)
+popHealth->>FHIR Server: record-match(search expr to master record list)
 Record Matcher->>FHIR Server: get messages
+FHIR Server-->>Record Matcher: record-match
 Record Matcher->>Record Matcher: process record-match message
 Record Matcher->>FHIR Server: record-match acknowledgement
 popHealth->>FHIR Server: get messages
+FHIR Server-->>popHealth: record-match acknowledgement
 Record Matcher->>popHealth: get data (RESTful Search)
+popHealth-->>Record Matcher: master record list
 Record Matcher->>Record Matcher:find matches
 Record Matcher->>FHIR Server: record-match response
 popHealth->>FHIR Server: get messages
+FHIR Server-->>popHealth: record-match response
 popHealth->>popHealth User: match complete
-```
+{% endmermaid %}
 
 
 ### Search Parameters
