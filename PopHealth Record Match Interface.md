@@ -247,7 +247,7 @@ Lastly, the Bundle will include zero or more entries to represent links between 
       - score -- _All entries SHALL have a score from 0 to 1, where 1 is the most certain_
 
 #### Example Messages
-- Example 1 JSON | [XML](record-match-response-xml-example-01.md)
+- Example 1 [JSON](record-match-response-json-example-01.md) | [XML](record-match-response-xml-example-01.md)
 
 ## Message Delivery Mechanism
 Section 2.4.4.1 of the FHIR Specification defines how a FHIR Server might offer a RESTful endpoint as central point for exchanging asynchronous messages. popHealth will use such an endpoint to exchange messages with a record matching system.
