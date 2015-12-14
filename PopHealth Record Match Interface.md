@@ -1,5 +1,5 @@
 
-#PopHealth Record Matching System Interface
+#popHealth Record Matching System Interface
 
 version 0.1
 xx December 2015
@@ -21,7 +21,7 @@ This document does not specify how popHealth is made aware of any record matchin
 1. This document assumes FHIR Specification [DSTU2](http://hl7.org/fhir/timelines.html), which is the current officially released version at the time of writing.
 
 ### Technical Approach
-popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. Pophealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
+popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. popHealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
 
 
 ```mermaid
@@ -91,7 +91,7 @@ The general structure of the record-match message is presented below.
                    	- resource
                    	 	- Parameters
                    			- parameter
-                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_ 
+                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_
                    				- valueUri
                    			- parameter -- _zero or more parameter elements that comprise the query expression_
                    				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search).  A search modifier may be appended to the name as described in [Modifiers](http://hl7.org/fhir/search.html#modifiers)._
@@ -111,7 +111,7 @@ The general structure of the record-match message is presented below.
                    	- resource
                    	 	- Parameters
                    			- parameter
-                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_ 
+                   				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_
                    				- valueUri
                    			- parameter -- _zero or more parameter elements that comprise the query expression_
                    				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search)_
@@ -132,7 +132,7 @@ See the FHIR Specification for the data type definitions and optional elements f
 - [Practitioner](http://www.hl7.org/implement/standards/fhir/practitioner.html)
 
 
-The messasge header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to construct and then invoke a FHIR Search operation in order to retrieve data to process. 
+The message header will contain one or two data elements that reference a Parameters resource that appears in an entry element in the message. The Parameters resource provides information that allows the record matching system to construct and then invoke a FHIR Search operation in order to retrieve data to process. 
 
 One data element is provided when the record matching system is expected to identify records that are potentially duplicates in the data set.  Two data elements are provided when the record matcher is being directed to look in the first data set (i.e., master record list) for potential matches of each of the records in the second data set (i.e., query list).
 
@@ -244,7 +244,7 @@ Lastly, the Bundle will include zero or more entries to represent links between 
     - search
       - extension -- Patient Matching using an MPI FHIR extension
         - valueCode -- Values that conform to the [MPIMatch](http://hl7.org/fhir/DSTU2/valueset-patient-mpi-match.html) value set. The value will indicate the match quality.
-      - score -- All entries SHALL have a score from 0 to 1, where 1 is the most certain 
+      - score -- All entries SHALL have a score from 0 to 1, where 1 is the most certain
 
 #### Example Messages
 - Example 1 JSON | [XML](record-match-response-xml-example-01.md)
@@ -281,4 +281,3 @@ The process of authenticating with any of the involved FHIR Servers is outside t
 ## Resources
 - [FHIR DSTU2 Specification](http://hl7.org/fhir/index.html)
 - [FHIR Messaging](http://www.hl7.org/implement/standards/fhir/messaging.html)
-
