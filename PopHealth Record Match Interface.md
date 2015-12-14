@@ -29,10 +29,9 @@ sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>Record Matcher: record-match(link to data set)
 Record Matcher->>popHealth: record-match acknowledgement
-Record Matcher->>popHealth: get data
+Record Matcher->>popHealth: get data (RESTful Search)
 Record Matcher->>Record Matcher:find matches
 Record Matcher->>popHealth: record-match response
-popHealth->>Record Matcher: record-match response acknowledgement
 popHealth->>popHealth User: match complete
 ```
 ### Use Cases
@@ -266,7 +265,21 @@ The record matching system should allow the interval at which it polls a FHIR Se
 
 A depiction of the record-match call sequence  with the FHIR Server included is:
 
-![Record Match Call Sequence](recordMatchCallSeqWithServer.png)
+```mermaid
+sequenceDiagram
+popHealth User->>popHealth: start match
+popHealth->>FHIR Server: record-match(link to data set)
+Record Matcher->>FHIR Server: get messages
+Record Matcher->>Record Matcher: process record-match message
+Record Matcher->>FHIR Server: record-match acknowledgement
+popHealth->>FHIR Server: get messages
+Record Matcher->>popHealth: get data (RESTful Search)
+Record Matcher->>Record Matcher:find matches
+Record Matcher->>FHIR Server: record-match response
+popHealth->>FHIR Server: get messages
+popHealth->>popHealth User: match complete
+```
+
 
 ### Search Parameters
 The [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search) will be the initial set of supported search parameters used in the record-match message.
