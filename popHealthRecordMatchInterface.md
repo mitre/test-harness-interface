@@ -142,9 +142,9 @@ One data element is provided when the record matching system is expected to iden
 
 #### Example Messages
 
-- Single Request Parameter: [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
-- Two Request Parameters: [JSON](record-match-json-example-02.md) | [XML](record-match-json-example-02.md)
-- Search Parameters: [JSON](record-match-json-searchParams-example.md)
+- Single Request Parameter: [JSON](record-match-json-example-01) | [XML](record-match-xml-example-01)
+- Two Request Parameters: [JSON](record-match-json-example-02) | [XML](record-match-json-example-02)
+- Search Parameters: [JSON](record-match-json-searchParams-example)
 
 ### record-match acknowledgement
 A record matching system should send a message acknowledging receipt of a record-match message. An acknowledgement is recommended because the time to complete the requested matching operation may be significant.
@@ -197,8 +197,8 @@ See the FHIR Specification for the data type definitions and optional elements f
 - [OperationOutcome](http://www.hl7.org/implement/standards/fhir/operationoutcome.html)
 
 #### Example Messages
-- Accepted Request: [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
-- Rejected Request 1: [JSON](record-match-ack-json-example-02.md) | [XML](record-match-ack-xml-example-02.md)
+- Accepted Request: [JSON](record-match-ack-json-example-01) | [XML](record-match-ack-xml-example-01)
+- Rejected Request 1: [JSON](record-match-ack-json-example-02) | [XML](record-match-ack-xml-example-02)
 
 
 ### record-match Response
@@ -250,7 +250,7 @@ Lastly, the Bundle will include zero or more entries to represent links between 
       - score -- _All entries SHALL have a score from 0 to 1, where 1 is the most certain_
 
 #### Example Messages
-- Example 1 [JSON](record-match-response-json-example-01.md) | [XML](record-match-response-xml-example-01.md)
+- Example 1 [JSON](record-match-response-json-example-01) | [XML](record-match-response-xml-example-01)
 
 ## Message Delivery Mechanism
 Section 2.4.4.1 of the FHIR Specification defines how a FHIR Server might offer a RESTful endpoint as central point for exchanging asynchronous messages. popHealth will use such an endpoint to exchange messages with a record matching system.
