@@ -94,8 +94,8 @@ The general structure of the record-match message is presented below.
                    				- name "resourceUrl" -- _base URL of the search epxression (i.e., everything before the question mark if the search expression is submitted using HTTP GET_ 
                    				- valueUri
                    			- parameter -- _zero or more parameter elements that comprise the query expression_
-                   				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search)_
-                   				- value[x] -- _value and, when applicable, prefix and modifier_
+                   				- name -- _name of search parameter from [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search).  A search modifier may be appended to the name as described in [Modifiers](http://hl7.org/fhir/search.html#modifiers)._
+                   				- value[x] -- _value and, when applicable, [prefix](http://hl7.org/fhir/search.html#prefix)_
 	- entry -- _Included only if record matching system is directed to search the master record list for matches of items in a query list_
      	- fullUrl -- *sender-generated uuid that identifies this entry*
 		- resource
@@ -141,7 +141,7 @@ One data element is provided when the record matching system is expected to iden
 
 - Single Request Parameter: [JSON](record-match-json-example-01.md) | [XML](record-match-xml-example-01.md)
 - Two Request Parameters: [JSON](record-match-json-example-02.md) | [XML](record-match-json-example-02.md)
-
+- Search Parameters: [JSON](record-match-json-searchParams-example.md)
 
 ### record-match acknowledgement
 A record matching system should send a message acknowledging receipt of a record-match message. An acknowledgement is recommended because the time to complete the requested matching operation may be significant.
@@ -194,7 +194,8 @@ See the FHIR Specification for the data type definitions and optional elements f
 - [OperationOutcome](http://www.hl7.org/implement/standards/fhir/operationoutcome.html)
 
 #### Example Messages
-- Example 1 [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
+- Accepted Request: [JSON](record-match-ack-json-example-01.md) | [XML](record-match-ack-xml-example-01.md)
+- Rejected Request 1: [JSON](record-match-ack-json-example-02.md) | [XML](record-match-ack-xml-example-02.md)
 
 
 ### record-match Response
@@ -263,7 +264,9 @@ A record matching system must provide a capability to receive the record-match F
 
 The record matching system should allow the interval at which it polls a FHIR Server for messages to be configurable.
 
+A depiction of the record-match call sequence  with the FHIR Server included is:
 
+![Record Match Call Sequence](recordMatchCallSeqWithServer.png)
 
 ### Search Parameters
 The [Patient Search Parameters](http://www.hl7.org/implement/standards/fhir/patient.html#search) will be the initial set of supported search parameters used in the record-match message.
