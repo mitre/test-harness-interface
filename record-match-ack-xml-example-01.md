@@ -1,6 +1,10 @@
+---
+layout: default
+---
 # record-match Acknowledgement Response Message Accept Example: XML
 
-```xml
+
+~~~xml
  <Bundle xmlns="http://hl7.org/fhir">
   <id value="3a0707d3-549e-4467-b8b8-5a2ab3800efe"/>
   <type value="message"/>
@@ -27,6 +31,6 @@
       </MessageHeader>
     </resource>
   </entry>
-  
+
 </Bundle>
-```
+~~~

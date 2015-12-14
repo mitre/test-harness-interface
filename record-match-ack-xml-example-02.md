@@ -1,8 +1,11 @@
+---
+layout: default
+---
 # record-match Acknowledgement Response Message Example: XML
 
 The following message returns an error code denoting that a required element in the request message was missing.
 
-```xml
+~~~xml
  <Bundle xmlns="http://hl7.org/fhir">
   <id value="3a0707d3-549e-4467-b8b8-5a2ab3800efe"/>
   <type value="message"/>
@@ -32,7 +35,7 @@ The following message returns an error code denoting that a required element in 
       </MessageHeader>
     </resource>
   </entry>
-  
+
   <entry>
     <fullUrl value="urn:uuid:25121321-4af5-424c-a0e1-ed3aab1c3560"/>
     <resource>
@@ -46,4 +49,4 @@ The following message returns an error code denoting that a required element in 
     </resource>
   </entry>  
 </Bundle>
-```
+~~~

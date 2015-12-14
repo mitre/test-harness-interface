@@ -1,8 +1,11 @@
+---
+layout: default
+---
 # record-match Response Message Example: JSON
 
 This example contains the minimum set of elements and attributes for a response to a record-match request.
 
-```json
+~~~json
 {
   "resourceType": "Bundle",
   "id": "3a0707d3-549e-4467-b8b8-5a2ab3800efe",
@@ -87,4 +90,4 @@ This example contains the minimum set of elements and attributes for a response 
     }
   ]
 }
-```
+~~~

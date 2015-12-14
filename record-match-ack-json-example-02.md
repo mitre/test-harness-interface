@@ -1,7 +1,11 @@
+---
+layout: default
+---
 # record-match Acknowledgement Response Message Example: JSON
 
 The following message returns an error code denoting that a required element in the request message was missing.
-```json
+
+~~~json
 {
   "resourceType": "Bundle",
   "id": "3a0707d3-549e-4467-b8b8-5a2ab3800efe",
@@ -45,4 +49,4 @@ The following message returns an error code denoting that a required element in 
     }
   ]
 }
-```
+~~~

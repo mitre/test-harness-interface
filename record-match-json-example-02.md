@@ -1,8 +1,11 @@
+---
+layout: default
+---
 # record-match Message Example: JSON
 
 This example contains the minimum set of elements expected in a record-match message.
 
-```json
+~~~json
 {
   "resourceType": "Bundle",
   "id": "10bb101f-a121-4264-a920-67be9cb82c74",
@@ -39,7 +42,7 @@ This example contains the minimum set of elements expected in a record-match mes
         ]
       }
     },
-    
+
     {
       "fullUrl": "urn:uuid:15121321-4af5-424c-a0e1-ed3aab1c348e",
       "resource": {
@@ -66,7 +69,7 @@ This example contains the minimum set of elements expected in a record-match mes
                   "name" : "name",
                   "valueString" : "jon"
                 }
-              }
+              ]
             }
           }
         ]
@@ -99,7 +102,7 @@ This example contains the minimum set of elements expected in a record-match mes
                   "name" : "name",
                   "valueString" : "john"
                 }
-              }
+              ]
             }
           }
         ]
@@ -120,4 +123,4 @@ This example contains the minimum set of elements expected in a record-match mes
 
   ]
 }
-```
+~~~

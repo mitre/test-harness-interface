@@ -1,8 +1,11 @@
+---
+layout: default
+---
 # record-match Message Example: XML
 
 This example contains the minimum set of elements expected in a record-match message.
 
-```xml
+~~~xml
 <Bundle xmlns="http://hl7.org/fhir">
   <id value="10bb101f-a121-4264-a920-67be9cb82c74"/>
   <type value="message"/>
@@ -42,11 +45,11 @@ This example contains the minimum set of elements expected in a record-match mes
         <parameter>
           <name value="type"/>
           <valueString value="master"/>
-        </parameter> 
+        </parameter>
         <parameter>
           <name value="resourceType"/>
           <valueString value="Patient"/>
-        </parameter> 
+        </parameter>
         <parameter>
           <name value="searchExpression" />
           <resource>
@@ -54,11 +57,11 @@ This example contains the minimum set of elements expected in a record-match mes
               <parameter>
                 <name value="resourceUrl"/>
                 <valueUri value="http://acme.com/popHealth/fhir/Patient"/>
-              </parameter> 
+              </parameter>
               <parameter>
                 <name value="name"/>
                 <valueString value="jon"/>
-              </parameter> 
+              </parameter>
             </Parameters>
           </resource>
         </parameter>
@@ -73,11 +76,11 @@ This example contains the minimum set of elements expected in a record-match mes
         <parameter>
           <name value="type"/>
           <valueString value="query"/>
-        </parameter> 
+        </parameter>
         <parameter>
           <name value="resourceType"/>
           <valueString value="Patient"/>
-        </parameter> 
+        </parameter>
         <parameter>
           <name value="searchExpression" />
           <resource>
@@ -85,11 +88,11 @@ This example contains the minimum set of elements expected in a record-match mes
               <parameter>
                 <name value="resourceUrl"/>
                 <valueUri value="http://acme.com/popHealth/fhir/Patient"/>
-              </parameter> 
+              </parameter>
               <parameter>
                 <name value="name"/>
                 <valueString value="john"/>
-              </parameter> 
+              </parameter>
             </Parameters>
           </resource>
         </parameter>
@@ -109,6 +112,6 @@ This example contains the minimum set of elements expected in a record-match mes
       </Practitioner>
     </resource>
   </entry>  
- 
+
 </Bundle>
-```
+~~~
