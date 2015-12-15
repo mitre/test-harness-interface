@@ -6,9 +6,7 @@ module Jekyll
     end
 
     def render(context)
-      @config = context.registers[:site].config['mermaid']
-      "<div class=\"mermaid\">#{super}</div>"\
-      "<script>mermaid.init(undefined, $(\".mermaid\"));</script>"
+      "<div class=\"mermaid\">#{super}</div>"
     end
   end
 end

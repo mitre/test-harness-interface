@@ -172,8 +172,6 @@ pre {
     }
 }
 
-
-
 /**
  * Clearfix
  */
@@ -186,7 +184,13 @@ pre {
     }
 }
 
+.mermaid {
+  height: 600px;
+}
 
+svg {
+  overflow: hidden;
+}
 
 /**
  * Icons
