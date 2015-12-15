@@ -131,6 +131,7 @@ The general structure of the record-match message is presented below.
           - value -- _popHealth user name or other identifier_
 
 See the FHIR Specification for the data type definitions and optional elements for the resources used in the record-match message.
+
 - [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
 - [MessageHeader](http://www.hl7.org/implement/standards/fhir/messageheader.html)
 - [Parameters](http://www.hl7.org/implement/standards/fhir/parameters.html)
@@ -194,6 +195,7 @@ The OperationOutcome must have issue severity value, "error" and an issue code v
 
 
 See the FHIR Specification for the data type definitions and optional elements for the  resources used in this message.
+
 - [Bundle](http://www.hl7.org/implement/standards/fhir/bundle.html)
 - [MessageHeader](http://www.hl7.org/implement/standards/fhir/messageheader.html)
 - [OperationOutcome](http://www.hl7.org/implement/standards/fhir/operationoutcome.html)
