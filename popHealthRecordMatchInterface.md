@@ -29,7 +29,8 @@ This document does not specify how popHealth is made aware of any record matchin
 ### Technical Approach
 popHealth will use a FHIR message to initiate a matching operation.  The record-match message contains information that allows the record matching system to make a RESTful FHIR Search call to retrieve the data that is to be processed. On receipt of the record-match request, the record matching system should respond with a message that indicates whether it accepts or rejects the message.  If the request is rejected, an error code that indicates the reason should be provided. When the record matching system accepts a record-match request and finishes processing it, the record matching system sends a FHIR message containing the match results back to popHealth. popHealth, in turn can make the results available to the popHealth user who had requested the operation.  These high level steps can be depicted as:
 
-{% mermaid %}
+<div class="mermaid">
+
 sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>Record Matcher: record-match(search expr to master record list)
@@ -38,7 +39,8 @@ Record Matcher->>popHealth: get data (RESTful Search)
 Record Matcher->>Record Matcher:find matches
 Record Matcher->>popHealth: record-match response
 popHealth->>popHealth User: match complete
-{% endmermaid %}
+
+</div>
 
 ### Use Cases
 There are two use cases covered by this interface definition.
@@ -273,7 +275,8 @@ The record matching system should allow the interval at which it polls a FHIR Se
 
 A depiction of the record-match call sequence  with the FHIR Server included is:
 
-{% mermaid %}
+<div class="mermaid">
+
 sequenceDiagram
 popHealth User->>popHealth: start match
 popHealth->>FHIR Server: record-match(search expr to master record list)
@@ -290,7 +293,8 @@ Record Matcher->>FHIR Server: record-match response
 popHealth->>FHIR Server: get messages
 FHIR Server-->>popHealth: record-match response
 popHealth->>popHealth User: match complete
-{% endmermaid %}
+
+</div>
 
 
 ### Search Parameters
