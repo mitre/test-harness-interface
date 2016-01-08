@@ -6,7 +6,7 @@ layout: default
 
 version 0.1
 
-xx December 2015
+17 December 2015
 
 The MITRE Corporation
 
