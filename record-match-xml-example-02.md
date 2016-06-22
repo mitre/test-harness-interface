@@ -16,7 +16,7 @@ This example contains the minimum set of elements expected in a record-match mes
         <id value="efdd254b-0e09-4164-883e-35cf3871715f"/>
         <timestamp value="2015-12-08T11:15:33-05:00"/>
         <event>
-          <system value="https://github.com/pophealth/fhir/message-events"/>
+          <system value="http://github.com/mitre/ptmatch/fhir/message-events"/>
           <code value="record-match"/>
         </event>
         <source>
@@ -106,7 +106,7 @@ This example contains the minimum set of elements expected in a record-match mes
       <Practitioner>
         <identifier>
           <use value="usual"/>
-          <system value="https://github.com/pophealth/users" />
+          <system value="http://github.com/mitre/ptmatch/users" />
           <value value="user1" />
         </identifier>
       </Practitioner>
