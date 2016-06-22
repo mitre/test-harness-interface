@@ -4,9 +4,9 @@ layout: default
 
 # popHealth Record Matching System Interface
 
-version 0.1
+version 0.2
 
-17 December 2015
+22 June 2016
 
 The MITRE Corporation
 
@@ -69,7 +69,7 @@ The general structure of the record-match message is presented below.
         - id -- _identifier of the message_
         - timestamp -- _time the message was sent_
         - event
-          - system "https://github.com/popHealth" -- _namespace for record-match message event code_
+          - system "http://github.com/mitre/ptmatch/fhir/message-events" -- _namespace for record-match message event code_
           - code  "record-match" -- _code value to denote a record-match message_
         - source
           - endpoint -- _the address to which responses to this message should be sent_
@@ -127,7 +127,7 @@ The general structure of the record-match message is presented below.
       - Practitioner
         - identifier
           - use "usual"
-          - system "https://github.com/pophealth/users" -- _uri of code space that represents popHealth user identifiers (e.g., user names)_
+          - system "http://github.com/mitre/ptmatch/users" -- _uri of code space that represents popHealth user identifiers (e.g., user names)_
           - value -- _popHealth user name or other identifier_
 
 See the FHIR Specification for the data type definitions and optional elements for the resources used in the record-match message.
@@ -170,7 +170,7 @@ The OperationOutcome must have issue severity value, "error" and an issue code v
         - id -- _identifier of the message_
         - timestamp -- _time the message was sent_
         - event
-          - system "https://github.com/popHealth" -- _namespace for record-match message event code_
+          - system "http://github.com/mitre/ptmatch/fhir/message-events" -- _namespace for record-match message event code_
           - code  "record-match" -- _code value to denote a record-match message_
         - response
           - identifier -- _identifier of the message for which this is a response_
@@ -224,7 +224,7 @@ Lastly, the Bundle will include zero or more entries to represent links between 
         - id -- *sender-generated uuid*
         - timestamp -- _time the message was sent_
         - event
-          - system "https://github.com/popHealth"
+          - system "http://github.com/mitre/ptmatch/fhir/message-events"
           - code  "record-match"
         - source
           - endpoint -- _The URI identifying the patient matching system_

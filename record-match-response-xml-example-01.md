@@ -16,7 +16,7 @@ This example contains the minimum set of elements and attributes for a response 
         <id value="caf609cf-c3a7-4be3-a3aa-356b9bb69d4f"/>
         <timestamp value="2015-12-08T11:17:33+10:00"/>
         <event>
-          <system value="https://github.com/pophealth/fhir/message-events"/>
+          <system value="http://github.com/mitre/ptmatch/fhir/message-events"/>
           <code value="record-match"/>
         </event>
         <response>
