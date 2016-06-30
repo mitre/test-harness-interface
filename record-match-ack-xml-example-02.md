@@ -16,7 +16,7 @@ The following message returns an error code denoting that a required element in 
         <id value="caf609cf-c3a7-4be4-a3aa-356b9bb69d4f"/>
         <timestamp value="2015-12-08T11:17:50-05:00"/>
         <event>
-          <system value="https://github.com/pophealth/fhir/message-events"/>
+          <system value="http://github.com/mitre/ptmatch/fhir/message-events"/>
           <code value="record-match"/>
         </event>
         <response>

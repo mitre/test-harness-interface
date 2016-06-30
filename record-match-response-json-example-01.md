@@ -18,7 +18,7 @@ This example contains the minimum set of elements and attributes for a response 
         "id": "caf609cf-c3a7-4be4-a3aa-356b9bb69d4f",
         "timestamp": "2015-12-08T11:17:50-05:00",
         "event": {
-          "system": "https://github.com/pophealth/fhir/message-events",
+          "system": "http://github.com/mitre/ptmatch/fhir/message-events",
           "code": "record-match"
         },
         "response": {
